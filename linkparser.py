@@ -8,7 +8,14 @@ class LinksParser(object):
     def __init__(self, baseurl, html_content):
         super(LinksParser, self).__init__()
         self.weburl = self.baseurl = baseurl
-        self.html_content = html_content
+
+        # patch-001:
+        # '''
+        # html_content = '<html>xxx</html><script src="x"></script>'
+        # BeautifulSoup cannot get script tag.
+        # '''
+
+        self.html_content = '<patch-001>'+html_content
         self.url_links = {
             'a':[],
             'link':[],
