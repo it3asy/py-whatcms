@@ -1,0 +1,5 @@
+patch-001:
+
+html_content = '<html>xxx</html><script src="x"></script>'
+
+BeautifulSoup获取不到后面的script标签。
