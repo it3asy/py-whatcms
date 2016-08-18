@@ -380,10 +380,24 @@ class WhatCMS(object):
 			_debug('platform specified to %s'%self.platform, 1)
 		for i in ld:
 			conf = self.config_dir + '/' + i
+			cfg = self.cfg#ConfigParser.ConfigParser()
+			
+			if not os.path.exists(conf):
+				ld1 = os.listdir(self.config_dir)
+				for j in ld1:
+					conf = self.config_dir + '/' + j
+					cfg.read(conf)
+					software = {}
+					items= cfg.items('software')
+					for item in items:
+						software[item[0].lower()] = item[1].strip()
+					if software['name'] == self.specified:
+						conf = self.config_dir + '/' + j
+						break
+
 			if not os.path.exists(conf):
 				_debug('error: file %s not found'%conf, 1)
 			else:
-				cfg = self.cfg#ConfigParser.ConfigParser()
 				cfg.read(conf)
 				software = {}
 				items= cfg.items('software')
