@@ -1,0 +1,6 @@
+patch-002:
+
+cms名字和其配置文件名不一致[echuang.conf<->echuangcms]，导致指定cms时容易找不到对应cms，特别在外部调用本程序时。
+
+故指定specified参数时，首先寻找对应配置文件，如果找不到，遍历所有配置找对应cmsname.
+
