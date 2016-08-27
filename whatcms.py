@@ -62,10 +62,18 @@ def get_charset(html, headers=[]):
 	if dict(headers).has_key('Content-Type'):
 		match = re.search('charset[\s]*?=[\s]*?[\'"]?([a-z0-9\-]+)[\'"]?', headers['Content-Type'], re.IGNORECASE)
 		if match:
-			return match.group(1).upper()
+			codec = match.group(1).upper()
+			if codec in ['UTF-8','GBK','GB2312','GB18030','BIG5']:
+				return codec
+			if codec.startswith('GB'):
+				return 'GB18030'
 	match = re.search('<meta\s[\s\S]*?charset[\s]*?=[\s]*?[\'"]?([a-z0-9\-]+)[\'"]?[\s\S]*?>', html, re.IGNORECASE)
 	if match:
-		return match.group(1).upper()
+		codec = match.group(1).upper()
+		if codec in ['UTF-8','GBK','GB2312','GB18030','BIG5']:
+			return codec
+		if codec.startswith('GB'):
+			return 'GB18030'
 	try_list = ["UTF-8", "GB18030", "BIG5"]
 	for codec in try_list:
 		try:

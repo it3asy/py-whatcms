@@ -1,0 +1,4 @@
+patch-003:
+
+从页面(HEADER)获取的charset需要验证.
+
