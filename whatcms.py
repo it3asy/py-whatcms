@@ -393,8 +393,8 @@ class WhatCMS(object):
 			if not os.path.exists(conf):
 				ld1 = os.listdir(self.config_dir)
 				for j in ld1:
-					conf = self.config_dir + '/' + j
-					cfg.read(conf)
+					conf1 = self.config_dir + '/' + j
+					cfg.read(conf1)
 					software = {}
 					items= cfg.items('software')
 					for item in items:
@@ -404,7 +404,7 @@ class WhatCMS(object):
 						break
 
 			if not os.path.exists(conf):
-				_debug('error: file %s not found'%conf, 1)
+				_debug('error: cms %s not configed'%self.specified, 1)
 			else:
 				cfg.read(conf)
 				software = {}
