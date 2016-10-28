@@ -146,9 +146,12 @@ class LinksParser(object):
 
     def get_links_external(self):
         for i in self.getall()['a']:
-            p = urlparse.urlparse(i)
-            if  p.netloc == urlparse.urlparse(self.weburl).netloc:
-                continue
-            else:
-                self.external_links.append(i)
+            try:
+                p = urlparse.urlparse(i)
+                if  p.netloc == urlparse.urlparse(self.weburl).netloc:
+                    continue
+                else:
+                    self.external_links.append(i)
+            except Exception as e:
+                print 'linkparser error:',i,'urlparse error'
         return self.external_links
