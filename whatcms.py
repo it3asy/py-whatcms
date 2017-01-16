@@ -83,6 +83,14 @@ def get_charset(html, headers=[]):
 			continue
 	return 'UTF-8'
 
+def get_baseurl(weburl):
+	_urlObj = urlparse.urlparse(weburl)
+	_basepath = _urlObj.path[0:_urlObj.path.rfind('/')]
+	baseurl = '{0}://{1}/{2}'.format(_urlObj.scheme,_urlObj.netloc,_basepath)
+	if not baseurl.endswith('/'):
+		baseurl += '/'
+	return baseurl
+
 
 class FingerStuff(object):
 	def __init__(self, finger):
@@ -189,9 +197,8 @@ class HttpStuff(object):
 			'Connection': 'keep-alive'
 			}
 			session = requests.Session()
-			baseurl = self.website + url
 			try:
-				resp = session.get(baseurl, headers=headers, timeout=10)
+				resp = session.get(url, headers=headers, timeout=10)
 				self.exception = None
 				self.cache_put(url, resp)
 			except Exception as e:
@@ -207,7 +214,8 @@ class WhatCMS(object):
 	def __init__(self,target):
 		self.config_suffix = 'conf'
 		self.config_dir = ROOT_DIR + '/conf'
-		self.website = target['website']
+		self.website = target['website'].strip()
+		self.baseurl = get_baseurl(self.website)
 		self.specified = target['specified']
 		self.platform = target['platform']
 
@@ -222,12 +230,9 @@ class WhatCMS(object):
 			]
 
 
-	def get_links(self, website, url):
+	def get_links(self, url):
+		baseurl = get_baseurl(url)
 		content = self.httpstuff.get_content(url).content
-		if not website.endswith('/') and not url.startswith('/'):
-			baseurl = website + '/' + url
-		else:
-			baseurl = website + url
 		links = LinksParser(baseurl,content).get_links_internal()
 		return links
 
@@ -250,14 +255,15 @@ class WhatCMS(object):
 		_debug('_logic=%s' % _logic, 3)
 		_debug('_func=%s' % _func, 3)
 
-		
 		if self.httpstuff.exception:
 			for err in self.reqbad:
 				if err in self.httpstuff.exception:
 					_debug(self.httpstuff.exception, 2)
 					return -1
-
-		stuff = self.httpstuff.get_content(_url)
+		url = self.baseurl
+		if _url != '/':
+			url += _url
+		stuff = self.httpstuff.get_content(url)
 		if stuff.exception:
 			_debug(self.httpstuff.exception, 2)
 			for err in self.reqbad:
@@ -324,7 +330,7 @@ class WhatCMS(object):
 
 		if _type == 'url':
 			validate = False
-			links = self.get_links(self.website, _url)
+			links = self.get_links(url)
 
 			if _position == 'urlparse.path':
 				for i in range(len(links)):
