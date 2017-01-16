@@ -1,0 +1,3 @@
+patch-004:
+
+使用场景有些变动,处理的网站URL不再是标准的http://target.com/格式,增加对http://target.com/index.php这样的格式支持.
