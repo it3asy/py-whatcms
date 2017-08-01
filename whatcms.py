@@ -226,6 +226,7 @@ class WhatCMS(object):
 		self.reqbad = [
 			'connect timeout',
 			'Connection timed out',
+			'Read timed out',
 			'No route to host',
 			'Name or service not known',
 			]
