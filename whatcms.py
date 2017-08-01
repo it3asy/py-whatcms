@@ -224,7 +224,7 @@ class WhatCMS(object):
 		self.httpstuff = HttpStuff(self.website)
 
 		self.reqbad = [
-			'Connect timeout',
+			'connect timeout',
 			'No route to host',
 			'Name or service not known',
 			]
@@ -436,7 +436,7 @@ class WhatCMS(object):
 						ret = self.check_finger(finger)
 						if ret == -1:
 							_debug('error: bad request, exiting...', 1)
-							return
+							return -1
 
 						if ret == 1:
 							return software
@@ -473,7 +473,9 @@ if __name__=='__main__':
 	target = {'website':args[0], 'specified':specified, 'platform':platform}
 
 	r = whatcms(target,DEBUG_LEVEL)
-	if r:
+	if r == -1:
+		print 'Bad Networking'
+	elif r:
 		print 'Found [%s]' % r['name']
 	else:
 		print 'Not Found'
