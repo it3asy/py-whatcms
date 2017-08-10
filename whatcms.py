@@ -198,7 +198,7 @@ class HttpStuff(object):
 			}
 			session = requests.Session()
 			try:
-				resp = session.get(url, headers=headers, timeout=10)
+				resp = session.get(url, headers=headers, timeout=10, verify=False)
 				self.exception = None
 				self.cache_put(url, resp)
 			except Exception as e:
@@ -263,8 +263,9 @@ class WhatCMS(object):
 					_debug(self.httpstuff.exception, 2)
 					return -1
 		url = self.baseurl
-		if _url != '/':
-			url += _url
+		if _url.startswith('/'): 
+			url=url.strip('/')
+		url += _url
 		stuff = self.httpstuff.get_content(url)
 		if stuff.exception:
 			_debug(self.httpstuff.exception, 2)
