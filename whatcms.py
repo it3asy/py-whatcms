@@ -219,7 +219,7 @@ class WhatCMS(object):
 		self.specified = target['specified']
 		self.platform = target['platform']
 
-		self.cfg = ConfigParser.ConfigParser()
+		# self.cfg = ConfigParser.ConfigParser() # patch-005
 
 		self.httpstuff = HttpStuff(self.website)
 
@@ -397,7 +397,7 @@ class WhatCMS(object):
 			_debug('platform specified to %s'%self.platform, 1)
 		for i in ld:
 			conf = self.config_dir + '/' + i
-			cfg = self.cfg#ConfigParser.ConfigParser()
+			cfg = ConfigParser.ConfigParser() # patch-005
 			
 			if not os.path.exists(conf):
 				ld1 = os.listdir(self.config_dir)

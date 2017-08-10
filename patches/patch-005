@@ -1,0 +1,5 @@
+``
+cfg = ConfigParser.ConfigParser()
+cfg.read(conf)
+``
+分别读多个conf时cfg需要分别重新创建，不能重复使用，不然会保留以前读的conf信息。
